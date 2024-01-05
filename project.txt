@@ -1,0 +1,161 @@
+Microsoft Windows [Version 10.0.19045.2965]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\DELL>cd\
+
+C:\>cd xampp
+
+C:\xampp>cd mysql
+
+C:\xampp\mysql>cd bin
+
+C:\xampp\mysql\bin>mysql -h localhost -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database mapping;
+Query OK, 1 row affected (0.027 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| carshowroom        |
+| information_schema |
+| mapping            |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| sql0730            |
+| test               |
++--------------------+
+8 rows in set (0.186 sec)
+
+MariaDB [(none)]> use mapping;
+Database change
+
+MariaDB [mapping]> create table actor(act_id integer primary key,act_fname char(20),act_lname char(20),act_gender char(1));
+Query OK, 0 rows affected (0.169 sec)
+
+MariaDB [mapping]> desc actor;
++------------+----------+------+-----+---------+-------+
+| Field      | Type     | Null | Key | Default | Extra |
++------------+----------+------+-----+---------+-------+
+| act_id     | int(11)  | NO   | PRI | NULL    |       |
+| act_fname  | char(20) | YES  |     | NULL    |       |
+| act_lname  | char(20) | YES  |     | NULL    |       |
+| act_gender | char(1)  | YES  |     | NULL    |       |
++------------+----------+------+-----+---------+-------+
+4 rows in set (0.013 sec)
+
+MariaDB [mapping]> create table movie(mov_id integer primary key,mov_title char(50),mov_year integer,mov_time integer,mov_lang char(50),mov_dt_rel date,mov_rel_country char(5));
+Query OK, 0 rows affected (0.194 sec)
+
+MariaDB [mapping]> desc movie;
++-----------------+----------+------+-----+---------+-------+
+| Field           | Type     | Null | Key | Default | Extra |
++-----------------+----------+------+-----+---------+-------+
+| mov_id          | int(11)  | NO   | PRI | NULL    |       |
+| mov_title       | char(50) | YES  |     | NULL    |       |
+| mov_year        | int(11)  | YES  |     | NULL    |       |
+| mov_time        | int(11)  | YES  |     | NULL    |       |
+| mov_lang        | char(50) | YES  |     | NULL    |       |
+| mov_dt_rel      | date     | YES  |     | NULL    |       |
+| mov_rel_country | char(5)  | YES  |     | NULL    |       |
++-----------------+----------+------+-----+---------+-------+
+7 rows in set (0.011 sec)
+
+MariaDB [mapping]> create table director(dir_id integer primary key,dir_fname char(20),dir_lname char(20));
+Query OK, 0 rows affected (0.187 sec)
+
+MariaDB [mapping]> desc director;
++-----------+----------+------+-----+---------+-------+
+| Field     | Type     | Null | Key | Default | Extra |
++-----------+----------+------+-----+---------+-------+
+| dir_id    | int(11)  | NO   | PRI | NULL    |       |
+| dir_fname | char(20) | YES  |     | NULL    |       |
+| dir_lname | char(20) | YES  |     | NULL    |       |
++-----------+----------+------+-----+---------+-------+
+3 rows in set (0.011 sec)
+
+MariaDB [mapping]> create table genres(gen_id integer primary key,gen_title char(20));
+Query OK, 0 rows affected (0.261 sec)
+
+MariaDB [mapping]> desc genres;
++-----------+----------+------+-----+---------+-------+
+| Field     | Type     | Null | Key | Default | Extra |
++-----------+----------+------+-----+---------+-------+
+| gen_id    | int(11)  | NO   | PRI | NULL    |       |
+| gen_title | char(20) | YES  |     | NULL    |       |
++-----------+----------+------+-----+---------+-------+
+2 rows in set (0.011 sec)
+
+MariaDB [mapping]> create table reviewer(rev_id integer primary key,rev_name char(30));
+Query OK, 0 rows affected (0.259 sec)
+
+MariaDB [mapping]> desc reviewer;
++----------+----------+------+-----+---------+-------+
+| Field    | Type     | Null | Key | Default | Extra |
++----------+----------+------+-----+---------+-------+
+| rev_id   | int(11)  | NO   | PRI | NULL    |       |
+| rev_name | char(30) | YES  |     | NULL    |       |
++----------+----------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [mapping]> create table movie_cast(act_id integer,mov_id integer,role char(30),foreign key(act_id) references actor(act_id),foreign key(mov_id) references movie(mov_id));
+Query OK, 0 rows affected (0.312 sec)
+
+MariaDB [mapping]> desc movie_cast;
++--------+----------+------+-----+---------+-------+
+| Field  | Type     | Null | Key | Default | Extra |
++--------+----------+------+-----+---------+-------+
+| act_id | int(11)  | YES  | MUL | NULL    |       |
+| mov_id | int(11)  | YES  | MUL | NULL    |       |
+| role   | char(30) | YES  |     | NULL    |       |
++--------+----------+------+-----+---------+-------+
+3 rows in set (0.021 sec)
+
+MariaDB [mapping]> create table movie_direction(dir_id integer,mov_id integer,foreign key(dir_id) references director(dir_id),foreign key(mov_id)  references movie(mov_id));
+Query OK, 0 rows affected (0.245 sec)
+
+MariaDB [mapping]> desc movie_direction;
++--------+---------+------+-----+---------+-------+
+| Field  | Type    | Null | Key | Default | Extra |
++--------+---------+------+-----+---------+-------+
+| dir_id | int(11) | YES  | MUL | NULL    |       |
+| mov_id | int(11) | YES  | MUL | NULL    |       |
++--------+---------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [mapping]> create table movie_genres(mov_id integer,gen_id integer,foreign key(mov_id)  references movie(mov_id),foreign key(gen_id)  references genres(gen_id));
+Query OK, 0 rows affected (0.246 sec)
+
+MariaDB [mapping]> desc movie_genres;
++--------+---------+------+-----+---------+-------+
+| Field  | Type    | Null | Key | Default | Extra |
++--------+---------+------+-----+---------+-------+
+| mov_id | int(11) | YES  | MUL | NULL    |       |
+| gen_id | int(11) | YES  | MUL | NULL    |       |
++--------+---------+------+-----+---------+-------+
+2 rows in set (0.015 sec)
+
+MariaDB [mapping]> create table rating(mov_id integer,rev_id integer,rev_stars integer,num_o_ratings integer,foreign key(mov_id)  references movie(mov_id),foreign key(rev_id)  references reviewer(rev_id));
+Query OK, 0 rows affected (0.363 sec)
+
+MariaDB [mapping]> desc rating;
++---------------+---------+------+-----+---------+-------+
+| Field         | Type    | Null | Key | Default | Extra |
++---------------+---------+------+-----+---------+-------+
+| mov_id        | int(11) | YES  | MUL | NULL    |       |
+| rev_id        | int(11) | YES  | MUL | NULL    |       |
+| rev_stars     | int(11) | YES  |     | NULL    |       |
+| num_o_ratings | int(11) | YES  |     | NULL    |       |
++---------------+---------+------+-----+---------+-------+
+4 rows in set (0.013 sec)
+
+MariaDB [mapping]>
